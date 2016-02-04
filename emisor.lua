@@ -18,8 +18,13 @@ end
 --host = socket.dns.toip(host)
 
 --Abre el video desde una fuente de video en localhost en un puerto determinado
-os.execute('vlc conejo.ogv --sout "#duplicate{dst=standard{mux=ogg,dst=,access=http}}"'..
-             '--http-host=localhost --http-port='..player_port..' &')
+local ok,_,err = os.execute('vlc conejo.ogv --sout "#duplicate{dst=standard{mux=ogg,dst=,access=http}}" --http-host=localhost --http-port='..player_port..' &')
+--Not working with &
+if not ok then
+    print("Something went wrong")
+    os.exit()
+end
+
 os.execute("sleep 1")
 player=socket.connect("localhost", player_port)
 if not player then print("El player no esta reproduciendo") os.exit() end
